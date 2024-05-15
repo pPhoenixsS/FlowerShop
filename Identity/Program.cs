@@ -1,9 +1,15 @@
+using Identity.DAL;
+
 namespace Identity;
 
 public class Program
 {
     public static void Main(string[] args)
     {
+        var db = new DbHelper();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+        
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
