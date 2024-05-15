@@ -1,0 +1,12 @@
+﻿services:
+  apigateway:
+    image: apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+
+  identity:
+    image: identity
+    build:
+      context: .
+      dockerfile: Identity/Dockerfile
