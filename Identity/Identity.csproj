@@ -18,4 +18,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="BLL\" />
+      <Folder Include="Controllers\" />
+      <Folder Include="DAL\Models\" />
+    </ItemGroup>
+
 </Project>
