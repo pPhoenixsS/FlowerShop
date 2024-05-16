@@ -1,4 +1,5 @@
 using System.Text;
+using Identity.BLL;
 using Identity.DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -18,7 +19,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddSingleton<IUserDal, UserDal>();
+        builder.Services.AddScoped<IUserBll, UserBll>();
         builder.Services.AddSingleton<ISessionDal, SessionDal>();
+        builder.Services.AddScoped<ISessionBll, SessionBll>();
 
         // Add services to the container.
         builder.Services.AddAuthorization();

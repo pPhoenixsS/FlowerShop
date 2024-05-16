@@ -35,12 +35,11 @@ public class UserBll(IUserDal userDal) : IUserBll
         return modelFromDb;
     }
 
-    public async Task<string> Login(string email, string password)
+    public async Task<bool> Authenticate(string email, string password)
     {
         var modelFromDb = await GetUserByEmailAsync(email);
         if (modelFromDb.Password != Encrypt.HashPassword(password, modelFromDb.Salt))
-            throw new WrongDataException();
-        //TODO доделать логин после логики сессий
-        throw new NotImplementedException();
+            return false;
+        return true;
     }
 }

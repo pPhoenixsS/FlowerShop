@@ -3,9 +3,9 @@ using Identity.DAL.QueryModels;
 
 namespace Identity.Mappers;
 
-public static class RlQueryToUserModel
+public static class RegisterQmToUserModel
 {
-    public static UserModel Map(RegisterLoginQueryModel queryModel)
+    public static UserModel Map(RegisterQueryModel queryModel)
     {
         var userModel = new UserModel()
         {
