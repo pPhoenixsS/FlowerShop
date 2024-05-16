@@ -1,17 +1,55 @@
+using System.Text;
+using Identity.BLL;
+using Identity.DAL;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 namespace Identity;
 
 public class Program
 {
     public static void Main(string[] args)
     {
+        using (var db = new DbHelper())
+        {
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+        }
+        
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddSingleton<IUserDal, UserDal>();
+        builder.Services.AddScoped<IUserBll, UserBll>();
+        builder.Services.AddSingleton<ISessionDal, SessionDal>();
+        builder.Services.AddScoped<ISessionBll, SessionBll>();
 
         // Add services to the container.
         builder.Services.AddAuthorization();
+        
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "IdentityService",
+                    ValidAudience = "FlowerShopServices",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fK7s92LzN8Xm6T4pGq1YvH5jR3cW8uZb"))
+                };
+            });
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddControllers();
 
         var app = builder.Build();
 
@@ -25,26 +63,9 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+        app.UseAuthentication();
 
-        var summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        app.MapGet("/weatherforecast", (HttpContext httpContext) =>
-            {
-                var forecast = Enumerable.Range(1, 5).Select(index =>
-                        new WeatherForecast
-                        {
-                            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                            TemperatureC = Random.Shared.Next(-20, 55),
-                            Summary = summaries[Random.Shared.Next(summaries.Length)]
-                        })
-                    .ToArray();
-                return forecast;
-            })
-            .WithName("GetWeatherForecast")
-            .WithOpenApi();
+        app.MapControllers();
 
         app.Run();
     }
