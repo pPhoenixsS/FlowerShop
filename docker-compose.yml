@@ -10,3 +10,9 @@
     build:
       context: .
       dockerfile: Identity/Dockerfile
+
+  goods:
+    image: goods
+    build:
+      context: .
+      dockerfile: Goods/Dockerfile
