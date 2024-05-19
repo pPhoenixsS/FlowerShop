@@ -1,4 +1,4 @@
-﻿namespace Identity.DAL.Models;
+﻿namespace Goods.DAL.Models;
 
 public class Product
 {

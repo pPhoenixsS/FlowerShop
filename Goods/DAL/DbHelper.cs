@@ -1,7 +1,7 @@
-﻿using Identity.DAL.Models;
+﻿using Goods.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Identity.DAL;
+namespace Goods.DAL;
 
 public class DbHelper : DbContext
 {
