@@ -17,7 +17,7 @@ public static class JwtCreator
         {
             new Claim("UserId", userId.ToString()),
             new Claim("Email", email),
-            new Claim("Role", role.ToString())
+            new Claim(ClaimTypes.Role, role.ToString())
         };
 
         var token = new JwtSecurityToken(

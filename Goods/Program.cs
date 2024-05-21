@@ -1,27 +1,20 @@
 using System.Text;
-using Identity.BLL;
-using Identity.DAL;
+using Goods.BLL;
+using Goods.DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Identity;
+namespace Goods;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        /*using (var db = new DbHelper())
-        {
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-        }*/
+        /*var db = new DbHelper();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();*/
         
         var builder = WebApplication.CreateBuilder(args);
-
-        builder.Services.AddSingleton<IUserDal, UserDal>();
-        builder.Services.AddScoped<IUserBll, UserBll>();
-        builder.Services.AddSingleton<ISessionDal, SessionDal>();
-        builder.Services.AddScoped<ISessionBll, SessionBll>();
 
         // Add services to the container.
         builder.Services.AddAuthorization();
@@ -48,8 +41,12 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
         builder.Services.AddControllers();
+
+        builder.Services.AddSingleton<IProductDal, ProductDal>();
+        builder.Services.AddScoped<IProductBll, ProductBll>();
+        builder.Services.AddSingleton<IImagesDal, ImagesDal>();
+        builder.Services.AddSingleton<IImagesBll, ImagesBll>();
 
         var app = builder.Build();
 
@@ -60,10 +57,11 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseStaticFiles();
+
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-        app.UseAuthentication();
 
         app.MapControllers();
 
