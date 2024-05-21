@@ -1,4 +1,5 @@
 ﻿using Goods.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Goods.DAL;
 
@@ -32,5 +33,12 @@ public class ProductDal : IProductDal
         await using var db = new DbHelper();
         db.Products.Remove(await GetProductAsyncById(id));
         await db.SaveChangesAsync();
+    }
+
+    public async Task<List<Product>> GetProductsAsync()
+    {
+        await using var db = new DbHelper();
+        var products = await db.Products.Include(p=>p.Images).ToListAsync();
+        return products;
     }
 }

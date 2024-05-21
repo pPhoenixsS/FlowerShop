@@ -57,4 +57,17 @@ public static class ImageManager
             throw new NotFoundException();
         }
     }
+
+    public static async Task<List<string>> ImageToBase64(List<Images> images)
+    {
+        List<string> base64Images = new List<string>();
+        
+        foreach (var image in images)
+        {
+            var imageArray = await File.ReadAllBytesAsync(image.Path);
+            base64Images.Add(Convert.ToBase64String(imageArray));
+        }
+
+        return base64Images;
+    }
 }

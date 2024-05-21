@@ -1,6 +1,6 @@
 ﻿namespace Goods.DAL.Models;
 
-public class Product
+public class ProductResponceModel
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -8,5 +8,5 @@ public class Product
     public string Description { get; set; }
     public double Price { get; set; }
     public int Count { get; set; }
-    public List<Images> Images { get; set; }
+    public List<string> Images;
 }
