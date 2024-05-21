@@ -32,4 +32,10 @@ public class ProductBll(IProductDal productDal) : IProductBll
             throw new NotFoundException();
         await productDal.DeleteProductAsync(id);
     }
+
+    public async Task<List<Product>> GetProductsAsync()
+    {
+        var products = await productDal.GetProductsAsync();
+        return products;
+    }
 }
