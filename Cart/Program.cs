@@ -1,3 +1,4 @@
+using Cart.BLL;
 using Cart.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ICartDal, CartDal>();
+builder.Services.AddScoped<ICartBll, CartBll>();
 
 builder.Services.AddControllers();
 

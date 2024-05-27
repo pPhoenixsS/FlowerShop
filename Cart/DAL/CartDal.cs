@@ -33,4 +33,11 @@ public class CartDal : ICartDal
         db.Carts.Update(cart);
         return cart;
     }
+
+    public async Task<CartModel> GetCartByIdAsync(int id)
+    {
+        await using var db = new DbHelper();
+        var cartFromDb = await db.Carts.FindAsync(id)??new CartModel();
+        return cartFromDb;
+    }
 }
