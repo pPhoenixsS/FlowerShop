@@ -5,18 +5,10 @@ namespace Cart.DAL;
 
 public class CartDal : ICartDal
 {
-    public async Task<CartModel> AddProductAsync(CartModel cart)
+    public async Task RemoveProductAsync(params CartModel[] carts)
     {
         await using var db = new DbHelper();
-        await db.Carts.AddAsync(cart);
-        await db.SaveChangesAsync();
-        return cart;
-    }
-
-    public async Task RemoveProductAsync(CartModel cart)
-    {
-        await using var db = new DbHelper();
-        db.Remove(cart);
+        db.RemoveRange(carts.ToList());
         await db.SaveChangesAsync();
     }
 
@@ -31,6 +23,7 @@ public class CartDal : ICartDal
     {
         await using var db = new DbHelper();
         db.Carts.Update(cart);
+        await db.SaveChangesAsync();
         return cart;
     }
 
@@ -38,6 +31,15 @@ public class CartDal : ICartDal
     {
         await using var db = new DbHelper();
         var cartFromDb = await db.Carts.FindAsync(id)??new CartModel();
+        return cartFromDb;
+    }
+
+    public async Task<CartModel> GetCartByUserAndProductAsync(int userId, int productId)
+    {
+        await using var db = new DbHelper();
+        var cartFromDb =
+            await db.Carts.FirstOrDefaultAsync(c => c.UserId == userId
+                                                    && c.ProductId == productId) ?? new CartModel();
         return cartFromDb;
     }
 }

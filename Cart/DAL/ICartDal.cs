@@ -4,9 +4,9 @@ namespace Cart.DAL;
 
 public interface ICartDal
 {
-    public Task<CartModel> AddProductAsync(CartModel cart);
-    public Task RemoveProductAsync(CartModel cart);
+    public Task RemoveProductAsync(params CartModel[] carts);
     public Task<List<CartModel>> GetCartByUserIdAsync(int userId);
     public Task<CartModel> UpdateCartAsync(CartModel cart);
     public Task<CartModel> GetCartByIdAsync(int id);
+    public Task<CartModel> GetCartByUserAndProductAsync(int userId, int productId);
 }

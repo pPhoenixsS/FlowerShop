@@ -6,19 +6,6 @@ namespace Cart.BLL;
 
 public class CartBll(ICartDal cartDal) : ICartBll
 {
-    public async Task<CartModel> AddProductAsync(CartModel cart)
-    {
-        var cartFromDb = await cartDal.GetCartByIdAsync(cart.Id);
-        if (cartFromDb.Id != 0)
-        {
-            await UpdateCartAsync(cart);
-            return cart;
-        }
-
-        await cartDal.AddProductAsync(cart);
-        return cart;
-    }
-
     public async Task RemoveProductAsync(CartModel cart)
     {
         var cartFromDb = await cartDal.GetCartByIdAsync(cart.Id);
@@ -39,15 +26,29 @@ public class CartBll(ICartDal cartDal) : ICartBll
         return cart;
     }
 
-    public async Task<CartModel> UpdateCartAsync(CartModel cart)
+    public async Task<CartModel> UpdateCartAsync(CartModel cart, int userId)
     {
-        var cartFromDb = await cartDal.GetCartByIdAsync(cart.Id);
-        if (cartFromDb.Id == 0)
+        var cartFromDb = await cartDal.GetCartByUserAndProductAsync(userId, cart.ProductId);
+        
+        if (cartFromDb.Id != 0)
         {
-            throw new NotFoundException();
+            cart.Id = cartFromDb.Id;
+        }
+
+        if (cart.Count == 0)
+        {
+            await cartDal.RemoveProductAsync(cartFromDb);
+            return cart;
         }
 
         await cartDal.UpdateCartAsync(cart);
         return cart;
+    }
+
+    public async Task RemoveCartByUserId(int userId)
+    {
+        var cart = (await cartDal.GetCartByUserIdAsync(userId)).ToArray();
+
+        await cartDal.RemoveProductAsync(cart);
     }
 }
