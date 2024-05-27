@@ -16,3 +16,9 @@
     build:
       context: .
       dockerfile: Goods/Dockerfile
+
+  cart:
+    image: cart
+    build:
+      context: .
+      dockerfile: Cart/Dockerfile
