@@ -128,4 +128,21 @@ public class ProductController(IProductBll productBll, IImagesBll imagesBll) : C
         
         return Ok(json);
     }
+
+    [Authorize]
+    [HttpGet("/buy")]
+    public async Task<IActionResult> BuyProduct()
+    {
+        var jwt = Request.Headers.Authorization;
+        try
+        {
+            await productBll.BuyProducts(jwt.ToString());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        return Ok();
+    }
 }
