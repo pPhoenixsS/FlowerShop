@@ -16,6 +16,7 @@ public class UserBll(IUserDal userDal) : IUserBll
         user.Password = Encrypt.HashPassword(user.Password, user.Salt);
         user.Role = Role.User;
         await userDal.CreateUserAsync(user);
+        await BonusSystem.Register(user.Id, user.Email);
         return user;
     }
 
