@@ -7,7 +7,7 @@ public class DbHelper : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=4323;Database=CartDb;Username=User;Password=qwe123asd");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=CartDb;Username=postgres;Password=111hinata111");
     }
     
     public DbSet<CartModel> Carts { get; set; }
