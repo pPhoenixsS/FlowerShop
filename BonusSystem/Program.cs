@@ -1,4 +1,6 @@
 using System.Text;
+using BonusSystem.BLL;
+using BonusSystem.DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,6 +18,9 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddSingleton<IBonusDal, BonusDal>();
+        builder.Services.AddScoped<IBonusBll, BonusBll>();
         
         builder.Services.AddAuthentication(options =>
             {
