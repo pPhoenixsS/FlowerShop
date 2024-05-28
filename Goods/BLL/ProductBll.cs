@@ -1,6 +1,8 @@
 ﻿using Goods.DAL;
 using Goods.DAL.Models;
 using Goods.Exceptions;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Newtonsoft.Json;
 
 namespace Goods.BLL;
 
@@ -37,5 +39,32 @@ public class ProductBll(IProductDal productDal) : IProductBll
     {
         var products = await productDal.GetProductsAsync();
         return products;
+    }
+
+    public async Task BuyProducts(string jwt)
+    {
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Add("Authorization", jwt);
+        var response = await client.GetAsync("http://localhost:5002/cart");
+        if (!response.IsSuccessStatusCode)
+            throw new Exception();
+
+        var content = await response.Content.ReadAsStringAsync();
+        
+        var cart = JsonConvert.DeserializeObject<List<CartModel>>(content);
+
+        if (cart.Count == 0)
+            throw new Exception();
+
+        foreach (var product in cart)
+        {
+            var productFromDb = await productDal.GetProductAsyncById(product.ProductId);
+            if (productFromDb.Count < product.Count)
+                throw new Exception("недостаточно товара");
+            productFromDb.Count -= product.Count;
+            await productDal.UpdateProductAsync(productFromDb);
+        }
+
+        await client.DeleteAsync("http://localhost:5002/cart");
     }
 }

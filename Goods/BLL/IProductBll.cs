@@ -9,4 +9,5 @@ public interface IProductBll
     Task<Product> UpdateProductAsync(Product product);
     Task DeleteProductAsync(int id);
     Task<List<Product>> GetProductsAsync();
+    Task BuyProducts(string jwt);
 }
