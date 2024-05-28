@@ -56,10 +56,20 @@ public class ProductBll(IProductDal productDal) : IProductBll
         if (cart.Count == 0)
             throw new Exception();
 
+        List<Product> productsFromDb = new List<Product>();
+
         foreach (var product in cart)
         {
             var productFromDb = await productDal.GetProductAsyncById(product.ProductId);
+            productsFromDb.Add(productFromDb);
             if (productFromDb.Count < product.Count)
+                throw new Exception("недостаточно товара");
+        }
+
+        foreach (var product in cart)
+        {
+            var productFromDb = productsFromDb.FirstOrDefault(p => p.Id == product.ProductId) ?? new Product();
+            if(productFromDb.Id==0)
                 throw new Exception("недостаточно товара");
             productFromDb.Count -= product.Count;
             await productDal.UpdateProductAsync(productFromDb);
