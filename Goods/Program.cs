@@ -10,9 +10,9 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        /*var db = new DbHelper();
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();*/
+        //var db = new DbHelper();
+        //db.Database.EnsureDeleted();
+        //db.Database.EnsureCreated();
         
         var builder = WebApplication.CreateBuilder(args);
 
