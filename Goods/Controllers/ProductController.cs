@@ -130,13 +130,14 @@ public class ProductController(IProductBll productBll, IImagesBll imagesBll) : C
     }
 
     [Authorize]
-    [HttpGet("/buy")]
-    public async Task<IActionResult> BuyProduct()
+    [HttpGet("/buy/{bonuses:int}")]
+    public async Task<IActionResult> BuyProduct(int bonuses)
     {
         var jwt = Request.Headers.Authorization;
         try
         {
-            await productBll.BuyProducts(jwt.ToString());
+            var cost = await productBll.BuyProducts(jwt.ToString());
+            await BonusSystem.UpdateBonuses(bonuses, jwt.ToString(), cost);
         }
         catch (Exception e)
         {
