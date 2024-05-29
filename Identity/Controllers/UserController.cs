@@ -35,18 +35,18 @@ public class UserController(IUserBll userBll, ISessionBll sessionBll) : Controll
     [HttpPost("/login")]
     public async Task<IActionResult> Login([FromBody] LoginQueryModel model)
     {
-        if (!await userBll.Authenticate(model.Email, model.Password))
-            return Unauthorized();
-
-        var userModelFromDb = await userBll.GetUserByEmailAsync(model.Email);
-
-        var fingerPrint = Request.Headers["FingerPrint"];
-
-        if (string.IsNullOrWhiteSpace(fingerPrint))
-            return BadRequest();
-
         try
         {
+            if (!await userBll.Authenticate(model.Email, model.Password))
+                return Unauthorized();
+
+            var userModelFromDb = await userBll.GetUserByEmailAsync(model.Email);
+
+            var fingerPrint = Request.Headers["FingerPrint"];
+
+            if (string.IsNullOrWhiteSpace(fingerPrint))
+                return BadRequest();
+            
             var session = await sessionBll.CreateSessionAsync(userModelFromDb.Id, fingerPrint.ToString());
             var jwt = JwtCreator.CreateToken(userModelFromDb.Id, userModelFromDb.Email, userModelFromDb.Role);
 
@@ -62,7 +62,10 @@ public class UserController(IUserBll userBll, ISessionBll sessionBll) : Controll
         {
             return Conflict();
         }
-        
+        catch (NotFoundException e)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet("/refresh")]
