@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BonusSystem.Controllers;
 
-[Authorize]
 [ApiController]
 public class BonusController(IBonusBll bonusBll) : ControllerBase
 {
