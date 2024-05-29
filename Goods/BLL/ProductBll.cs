@@ -41,7 +41,7 @@ public class ProductBll(IProductDal productDal) : IProductBll
         return products;
     }
 
-    public async Task BuyProducts(string jwt)
+    public async Task<double> BuyProducts(string jwt)
     {
         using var client = new HttpClient();
         client.DefaultRequestHeaders.Add("Authorization", jwt);
@@ -57,7 +57,7 @@ public class ProductBll(IProductDal productDal) : IProductBll
             throw new Exception();
 
         List<Product> productsFromDb = new List<Product>();
-
+        
         foreach (var product in cart)
         {
             var productFromDb = await productDal.GetProductAsyncById(product.ProductId);
@@ -66,15 +66,20 @@ public class ProductBll(IProductDal productDal) : IProductBll
                 throw new Exception("недостаточно товара");
         }
 
+        double cost = 0;
+        
         foreach (var product in cart)
         {
             var productFromDb = productsFromDb.FirstOrDefault(p => p.Id == product.ProductId) ?? new Product();
             if(productFromDb.Id==0)
                 throw new Exception("недостаточно товара");
+            cost += product.Count * productFromDb.Price;
             productFromDb.Count -= product.Count;
             await productDal.UpdateProductAsync(productFromDb);
         }
 
         await client.DeleteAsync("http://localhost:5002/cart");
+
+        return cost;
     }
 }
