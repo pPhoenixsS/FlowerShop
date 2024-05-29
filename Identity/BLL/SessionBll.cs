@@ -33,7 +33,20 @@ public class SessionBll(ISessionDal sessionDal) : ISessionBll
         var sessionFromDb = await sessionDal.GetSessionByFingerPrintAsync(fingerPrint);
 
         if (sessionFromDb.Id != 0)
-            throw new ConflictException();
+        {
+            var oldSession = new SessionModel()
+            {
+                Id = sessionFromDb.Id,
+                UserModelId = userId,
+                RefreshToken = Guid.NewGuid().ToString(),
+                CreatedAt = DateTime.UtcNow,
+                FingerPrint = fingerPrint
+            };
+
+            await sessionDal.UpdateSessionAsync(oldSession);
+            
+            return oldSession;
+        }
         
         var session = new SessionModel()
         {

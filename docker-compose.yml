@@ -22,3 +22,9 @@
     build:
       context: .
       dockerfile: Cart/Dockerfile
+
+  bonussystem:
+    image: bonussystem
+    build:
+      context: .
+      dockerfile: BonusSystem/Dockerfile

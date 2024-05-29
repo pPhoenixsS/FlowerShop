@@ -32,6 +32,8 @@ public class ImagesBll(IImagesDal imagesDal) : IImagesBll
         var fileNames = images.Select(i => i.Path).ToList();
         var deleteTask = Task.Run(() => ImageManager.DeleteImages(fileNames));
 
+        await deleteTask;
+
         await imagesDal.DeleteImagesAsync(images);
     }
 

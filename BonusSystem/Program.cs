@@ -1,30 +1,32 @@
 using System.Text;
-using Identity.BLL;
-using Identity.DAL;
+using BonusSystem.BLL;
+using BonusSystem.DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Identity;
+namespace BonusSystem;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        using (var db = new DbHelper())
-        {
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-        }
-        
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddSingleton<IUserDal, UserDal>();
-        builder.Services.AddScoped<IUserBll, UserBll>();
-        builder.Services.AddSingleton<ISessionDal, SessionDal>();
-        builder.Services.AddScoped<ISessionBll, SessionBll>();
+        var db = new DbHelper();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
 
         // Add services to the container.
         builder.Services.AddAuthorization();
+
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
+        builder.Services.AddControllers();
+
+        builder.Services.AddSingleton<IBonusDal, BonusDal>();
+        builder.Services.AddScoped<IBonusBll, BonusBll>();
         
         builder.Services.AddAuthentication(options =>
             {
@@ -45,12 +47,6 @@ public class Program
                 };
             });
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-        builder.Services.AddControllers();
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -63,6 +59,7 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
         app.UseAuthentication();
 
         app.MapControllers();

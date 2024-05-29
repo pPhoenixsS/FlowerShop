@@ -41,8 +41,8 @@ public class ProductController(IProductBll productBll, IImagesBll imagesBll) : C
     {
         try
         {
-            await productBll.DeleteProductAsync(id);
             await imagesBll.DeleteImagesAsync(await imagesBll.GetImagesByProductAsync(id));
+            await productBll.DeleteProductAsync(id);
         }
         catch (Exception e)
         {
