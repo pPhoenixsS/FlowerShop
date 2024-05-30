@@ -20,7 +20,7 @@ public static class BonusSystem
         int newBonuses = 0;
         if (bonuses == 0)
         {
-            newBonuses = (int)(cost * 0.07);
+            newBonuses = currentBonuses.Bonuses + (int)(cost * 0.07);
             await client.PutAsync($"http://localhost:5003/bonus/{newBonuses.ToString()}", new MultipartContent());
             return;
         }
