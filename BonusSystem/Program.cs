@@ -12,9 +12,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var db = new DbHelper();
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
+        //var db = new DbHelper();
+        //db.Database.EnsureDeleted();
+        //db.Database.EnsureCreated();
 
         // Add services to the container.
         builder.Services.AddAuthorization();

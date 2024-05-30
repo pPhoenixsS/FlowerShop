@@ -6,9 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var db = new DbHelper();
-db.Database.EnsureDeleted();
-db.Database.EnsureCreated();
+//var db = new DbHelper();
+//db.Database.EnsureDeleted();
+//db.Database.EnsureCreated();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
