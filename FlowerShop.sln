@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart", "Cart\Cart.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonusSystem", "BonusSystem\BonusSystem.csproj", "{7370A36E-C41B-41A6-A54A-B038D0B91923}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.Tests", "FlowerShop.Tests\FlowerShop.Tests.csproj", "{CC42C9FC-2E8D-4446-9729-EA56EF68D0D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{7370A36E-C41B-41A6-A54A-B038D0B91923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7370A36E-C41B-41A6-A54A-B038D0B91923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7370A36E-C41B-41A6-A54A-B038D0B91923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC42C9FC-2E8D-4446-9729-EA56EF68D0D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC42C9FC-2E8D-4446-9729-EA56EF68D0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC42C9FC-2E8D-4446-9729-EA56EF68D0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC42C9FC-2E8D-4446-9729-EA56EF68D0D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{775C5B23-A00F-42B1-ADF3-614A39D4A6DE} = {B3CE2AD3-1694-4BEB-9D26-67C1B5580908}

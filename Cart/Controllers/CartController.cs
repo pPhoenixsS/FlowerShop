@@ -24,7 +24,17 @@ public class CartController(ICartBll cartBll) : ControllerBase
 
         await cartBll.UpdateCartAsync(cart, userId);
 
-        var carts = await cartBll.GetCartByUserIdAsync(userId);
+        List<CartModel> carts = new List<CartModel>();
+
+        try
+        {
+            carts = await cartBll.GetCartByUserIdAsync(userId);
+        }
+        catch (Exception e)
+        {
+            return Ok(carts);
+        }
+
         
         return Ok(carts);
     }
